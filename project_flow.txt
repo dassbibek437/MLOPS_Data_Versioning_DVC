@@ -1,3 +1,34 @@
 1. Create git repo and clone it in local.
 2. Create mycode.py and add code to it. (it will save a csv file to a new "data" folder)
 3. Do a git add-commit-push before initializing dvc.
+# pip install dvc
+4. Now we do "dvc init" (creates .dvcignore, .dvc)
+5. Now do "mkdir S3" (creates a new S3 directory)---->lets not make it compicated by adding aws directly ,just be simple for now 
+6. Now we do "dvc remote add -d myremote S3"---if we are using aws then we have useed awsurl in the palce of S3
+7. Next "dvc add data/" ---->Tell DVC to start tracking everything inside the data folder instead of Git.”
+
+What actually happens:
+
+DVC calculates a hash (fingerprint) of all files inside data/.
+
+The real data gets stored inside .dvc/cache/.
+
+A metadata file called data.dvc is created.
+
+The data/ folder becomes a tracked output (linked to cache).
+
+.gitignore is automatically updated so Git stops tracking raw data files.
+when we do dvc add data/ -->output PS C:\Mlops_tasks\MLOPS_Data_Versioning_DVC> dvc add data/
+Adding...
+ERROR:  output 'data' is already tracked by SCM (e.g. Git).
+    You can remove it from Git, then add to DVC.
+        To stop tracking from Git:
+            git rm -r --cached 'data'
+            git commit -m "stop tracking data" 
+PS C:\Mlops_tasks\MLOPS_Data_Versioning_DVC> 
+ Now it will ask to do: ("git rm -r --cached 'data'" and "git commit -m "stop tracking data"")
+   Because initially we were tracking data/ folder from git so now we remove it for DVC to handle.
+
+
+8. Again we do "dvc add data/" (creates data.dvc) then "git add .gitignore data.dvc"
+
